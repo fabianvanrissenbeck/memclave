@@ -130,6 +130,9 @@ where `N` is a number between 0 and 39 (inclusive). How many ranks are available
 `ci-switch` invocation in the `boot.sh` script on the *execution environment*. Adding the `--nr-ranks=N`
 option will cause the allocation of exactly `N` ranks. The default is just one rank.
 
+**NOTE:** The Memclave driver is not loaded automatically at boot. Programs using memclave's client library
+will fail if the driver has not been loaded via `insmod`.
+
 ## Beyond the Memclave Setup
 
 If you've completed all steps, you've successfully set-up a development environment for Memclave.
