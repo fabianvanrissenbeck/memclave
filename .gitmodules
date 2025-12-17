@@ -1,0 +1,18 @@
+[submodule "ci-switch"]
+	path = ci-switch
+	url = git@projects.cispa.saarland:fabian.van-rissenbeck/ci-switch.git
+[submodule "ime-client-library"]
+	path = ime-client-library
+	url = git@projects.cispa.saarland:fabian.van-rissenbeck/ime-client-library.git
+[submodule "ime"]
+	path = ime
+	url = git@projects.cispa.saarland:fabian.van-rissenbeck/ime.git
+[submodule "qemu"]
+	path = qemu
+	url = git@gitlab.fachschaften.org:ba/qemu.git
+[submodule "common"]
+	path = common
+	url = git@gitlab.fachschaften.org:ba/common.git
+[submodule "mbedtls"]
+	path = mbedtls
+	url = https://github.com/Mbed-TLS/mbedtls.git
