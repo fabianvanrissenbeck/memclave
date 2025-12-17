@@ -5,7 +5,7 @@ UPMEM hardware. To make the build instructions clear, we define three
 different environments:
 1. The *development environment* can be any recent x86_64 machine that is
    able to run Docker under Linux. Most compilation steps are transparently
-   handled in Docker containers, recuding the amount of specific requirements
+   handled in Docker containers, reducing the amount of specific requirements
    for the development environment.
 2. The *execution environment* is a machine equipped with UPMEM hardware. You
    may use this machine for the *development environment* as well, but this is
@@ -62,7 +62,76 @@ Memclave's hypervisor consists of two components, the `ci-switch` and `qemu`. Th
 the first-stage *loader*, and the key exchange and messaging subkernels. These
 kernels are included in the final `ci-switch` binary automatically. We provide a
 script that automatically builds all hypervisor components assuming that the
-`memclave` and `memclave-qemu` containers are imported or build. Simply run the
-`scripts/hyp/setup.sh` script, after setting up the containers, to compile `qemu`,
-the `ci-switch` and all the relevant PIM kernels. The results will be stored in the
-`hyp` folder.
+`memclave` and `memclave-qemu` containers are imported or build. Simply run
+```bash
+./scripts/hyp/setup.sh
+```
+after setting up the containers, to compile `qemu`, the `ci-switch` and all the
+relevant PIM kernels. The results will be stored in the `hyp` folder.
+
+## Launching the Virtual Machine
+
+Now that the hypervisor is build, we can move all hypervisor related files, which are
+placed in the `hyp` folder to the *execution environment*. The exact way for this depends
+on your concrete setup, for a remote *execution environment*, you may whish to compress
+the `hyp` folder into a `.tar.xz` file and then `scp` it over:
+```bash
+tar cf hyp.tar hyp
+xz -0 hyp.tar
+scp hyp.tar your-remote-environment:~
+```
+
+The `hyp` folder, now on your *execution environment*, contains a `qemu` build, the `ci-switch`,
+and a script to simplify booting up the *memclave environment*. You may notice that it also
+contains a premade disk image `memclave.qcow2`. This image contains a small, already set-up
+version of Debian 12. The VM image also already contains the memclave linux driver in the
+`/home/memclave/driver` folder. We have set up two users, `root` with the password `root` and
+`memclave` with the password `memclave`. Therer is no necessity to use this image, memclave
+works with all semi-recent linux distributions.
+
+In the execution environment, cd into your `hyp` folder, make the `boot.sh` script executable
+if necessary and run the script. This will start the `ci-switch` and boot the *memclave environment*.
+The `boot.sh` script configures `qemu` to use the tty as the main output, so you should be able
+to interact with the virtual machine, though in a somewhat limiting environment.
+
+**Setting Up SSH to the *Memclave Environment***
+
+You may wish to directly SSH into the *memclave environment* from your *development environment*.
+A way to do this, is to create an SSH reverse proxy from the *memclave environment* to the
+*execution environment* and then a proxy from the *development environment* to the *execution environment*.
+For this, run
+```bash
+ssh -NR 127.0.0.1:26173:localhost:22 <execution environment address*>
+```
+in the *memclave environment* and
+```bash
+ssh -NL 26173:localhost:26173 <execution environment address>
+```
+in the *development environment*. Note that the address of the *execution environment* will be different
+from the usual one in the *memclave environment*, if you are using the `boot.sh` script. The
+IP of the execution environment should be something like `10.0.2.2`. Now you should be able to run
+```bash
+ssh -p 26173 memclave@127.0.0.1
+```
+on your *development environment*, establishing direct SSH access to the *memclave environment*.
+
+**Compiling and Loading the Memclave Driver**
+
+In the *memclave environment*, cd to `/home/memclave/driver`. There you build the driver by running
+```bash
+make
+```
+and load it using the
+```bash
+insmod vpim.ko
+```
+command. Once loaded, the driver will create device nodes for all available ranks under `/dev/vpimN`,
+where `N` is a number between 0 and 39 (inclusive). How many ranks are available depends on the
+`ci-switch` invocation in the `boot.sh` script on the *execution environment*. Adding the `--nr-ranks=N`
+option will cause the allocation of exactly `N` ranks. The default is just one rank.
+
+## Beyond the Memclave Setup
+
+If you've completed all steps, you've successfully set-up a development environment for Memclave.
+From here, you can run the benchmarks also provided as part of this artifact, or develop your own
+programs using Memclave.
