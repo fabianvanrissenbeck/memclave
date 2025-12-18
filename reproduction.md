@@ -1,0 +1,56 @@
+# Reproduction Guide for Memclave
+
+In this guide we provide instructions on reproducing results from our paper. For this guide we assume,
+that you have already read and completed the setup instructions.
+
+## MRAM Benchmark
+
+The results of this benchmark are reported in Table 4 of our paper. The benchmark relies only
+on code part of the client library and its examples. It can be run on UPMEM and on Memclave,
+which one is selected using a CMake option. To build the Memclave version, run the following
+chain of commands in the guest VM:
+```bash
+cmake -DENABLE_UPMEM_BENCHMARK=OFF -b build-mram-memclave .
+cmake --build build-mram-memclave --target mram
+```
+This should yield an executable `build-mram-memclave/mram`. This executable outputs measurements
+formatted as CSV on the command line. Capture the output like this:
+```bash
+./build-mram-memclave/mram > mram.csv
+```
+
+Building the UPMEM version is quite similar, you run almost the same commands, but on a normal
+UPMEM machine and not the VM:
+```bash
+cmake -DENABLE_UPMEM_BENCHMARK=ON -b build-mram-upmem .
+cmake --build build-mram-upmem --target mram
+```
+Execution works the same way. Simply capture the output into a file:
+```bash
+./build-mram-upmem/mram > mram-upmem.csv
+```
+
+## Crypto Benchmark
+
+We present the performance of sealed EM transfer in table 3 of our paper. This measurement is based
+on a benchmark of ChaCha20's performance on PIM. The benchmark consists of two components, a subkernel
+and a guest side program.
+
+The guest side program is part of the client library examples. It can be build just like all other
+examples in the client library, by running the following commands inside the guest VM and `ime-client-lib`
+folder:
+```bash
+cmake -b build .
+cmake --build build --target crypto-bench
+```
+
+The build process for the crypto benchmark is similarly straight-forward: Assuming you're currently cd'd
+into the `ime` folder, running the following chain of commands will build the ChaCha20 benchmark subkernel:
+```bash
+docker run -it --rm -v ./:/ime memclave:latest bash
+cd /ime
+cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -b build
+cmake --build build --target chacha-bench
+```
+Now simply move the `chacha-bench` subkernel to the guest VM and execute the benchmark. Results are written
+into a CSV file passed as a parameter to the executable.
