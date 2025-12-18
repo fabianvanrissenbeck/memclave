@@ -1,4 +1,6 @@
-# Reproduction Guide for Memclave
+/**
+
+\page memclave-reprod Reproduction Guide for Memclave
 
 In this guide we provide instructions on reproducing results from our paper. For this guide we assume,
 that you have already read and completed the setup instructions.
@@ -54,3 +56,5 @@ cmake --build build --target chacha-bench
 ```
 Now simply move the `chacha-bench` subkernel to the guest VM and execute the benchmark. Results are written
 into a CSV file passed as a parameter to the executable.
+
+*/

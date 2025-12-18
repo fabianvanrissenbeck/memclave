@@ -1,4 +1,6 @@
-# Setup Instruction for Memclave
+/**
+
+\page memclave-setup Setup Instruction for Memclave
 
 These instructions allow setting up Memclave on a device equipped with
 UPMEM hardware. To make the build instructions clear, we define three
@@ -138,3 +140,5 @@ will fail if the driver has not been loaded via `insmod`.
 If you've completed all steps, you've successfully set-up a development environment for Memclave.
 From here, you can run the benchmarks also provided as part of this artifact, or develop your own
 programs using Memclave.
+
+*/

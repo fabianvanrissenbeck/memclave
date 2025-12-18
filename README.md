@@ -1,26 +1,4 @@
 # Memclave: Secure In-memory Enclave for Untrusted hosts - Artifact
 
-In this artifact for the paper: "Memclave: Secure In-memory Enclave for Untrusted hosts", we provide
-the source code for our core contribution Memclave, as well as the code created in our porting effort
-of the PRiM benchmark suite (see [Benchmarking a new paradigm: Experimental analysis and characterization of a real processing-in-memory system](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9771457)). To easy the setup cost, we provide a ready made VM image and two docker images as build and development environments.
+All our documentation is generated via Doxygen. Refer to docs/html/index.html to get started with the artifact.
 
-## Artifact Structure
-
-This artifact mainly consists of code for variuous components of Memclave. Here we provide short
-description for the contents of each subfolder:
-
-| Subfolder | Description |
-|:--:|:--|
-| `ci-switch` | The CI-switch is one of the two components building the Memclave hypervisor. Subfolders of `ci-switch` contain duplicates of other root folders of the artifact, because we've heavily used git submodules. This usage does not translate well to the artifact format. |
-| `common` | A library containing headers used by multiple components of Memclave. |
-| `driver` | A linux kernel module used to interface with PIM as a virtual machine running on top of Memclaves hypervisor. |
-| `hyp` | This folder is used as a target for scripts that generate the Memclave hypervisor from scratch to ease the setup of Memclave on a new system. |
-| `ime` | This folder contains the source of all PIM side programs, including the trusted loader, first stage loader, key exchange subkernels, messaging subkernels, and the subkernel portion of all ported PRiM benchmarks. Furthermore, this folder also contains documentation for the development of new subkernels. |
-| `ime-client-lib` | This folder contains the source of all programs running inside the `guest` system, which is running on top of the Memclave hypervisor. It includes a library interfacing with our linux kernel driver, that provides abstractions similar to UPMEM's host-side library. It also contains the guest side of all ported PRiM benchmarks and documentation for building new Memclave applications. |
-| `mbedtls` | Contains a copy of the `mbedtls` cryptographic library. We use this library for both on-DPU tasks, as well as normal guest-side tasks. |
-| `qemu` | QEMU forms the other one of the components building the Memclave hypervisor. The folder contains mostly QEMU source code, with patches made to interface with the CI-switch, PIM and the guest OS. |
-| `scripts` | Scripts to set up the Memclave hypervisor. |
-
-## Setup
-
-We provide a detailed guide on setting up the Memclave hypervisor on a new system equipped with UPMEM hardware [here](setup.md). After the hypervisor and guest os (we include a ready made VM image) are set up, you may want to reproduce the results from our paper by following our [reproduction guide](reproduction.md). The [client library documentation](ime-client-library/docs/html/index.html) can be used as a starting point to building applications for Memclave.
