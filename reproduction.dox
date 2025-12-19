@@ -83,4 +83,11 @@ You will have to rename the subkernel to `mlp` in this case, as paths for the Pr
 some cases. Afterwards, you should be able to run `ime-mlp-example`
 from within the build folder, assuming you have moved the `mlp` subkernel to `../build/`.
 
+We ship the baseline PrIM benchmarks as part of this artifact as well. For these, you'll have to follow the
+usual PrIM usage guidelines. In most cases this involves just compiling via `make` and then running the
+generated binary.
+
+Both the baseline and our ported benchmarks output data as CSV. From the output you will be able to generate
+Figure 3. in our paper.
+
 */
