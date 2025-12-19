@@ -12,7 +12,7 @@ on code part of the client library and its examples. It can be run on UPMEM and 
 which one is selected using a CMake option. To build the Memclave version, run the following
 chain of commands in the guest VM:
 ```bash
-cmake -DENABLE_UPMEM_BENCHMARK=OFF -b build-mram-memclave .
+cmake -DENABLE_UPMEM_BENCHMARK=OFF -B build-mram-memclave .
 cmake --build build-mram-memclave --target mram
 ```
 This should yield an executable `build-mram-memclave/mram`. This executable outputs measurements
@@ -42,7 +42,7 @@ The guest side program is part of the client library examples. It can be build j
 examples in the client library, by running the following commands inside the guest VM and `ime-client-lib`
 folder:
 ```bash
-cmake -b build .
+cmake -B build .
 cmake --build build --target crypto-bench
 ```
 
@@ -51,10 +51,36 @@ into the `ime` folder, running the following chain of commands will build the Ch
 ```bash
 docker run -it --rm -v ./:/ime memclave:latest bash
 cd /ime
-cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -b build
+cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
 cmake --build build --target chacha-bench
 ```
 Now simply move the `chacha-bench` subkernel to the guest VM and execute the benchmark. Results are written
 into a CSV file passed as a parameter to the executable.
+
+## PrIM Benchmarks
+
+We have ported 14 out of the 16 PrIM benchmarks to Memclave. The subkernel parts of the ported benchmarks
+are part of the `ime` folder, the guest parts are part of the `ime-client-lib` folder. Both subkernels and
+guest side programs are build via CMake.
+
+To build the guest part of the MLP benchmarks, run the following commands in the `ime-client-lib` folder:
+```bash
+cmake -B build .
+cmake --build build --target ime-mlp-example
+```
+
+The subkernel can be build using the `memclave` docker container as a build environment. Assuming you are
+currently cd'd into the `ime` folder, running the following chain of commands will build the MLP subkernel:
+```bash
+docker run -it --rm -v ./:/ime memclave:latest bash
+cd /ime
+cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
+cmake --build build --target mlp-example
+```
+
+The `mlp-example` subkernel will be located in `./build/mlp-example`. This can now be moved the the guest system.
+You will have to rename the subkernel to `mlp` in this case, as paths for the PrIM benchmarks are hardcoded in
+some cases. Afterwards, you should be able to run `ime-mlp-example`
+from within the build folder, assuming you have moved the `mlp` subkernel to `../build/`.
 
 */
