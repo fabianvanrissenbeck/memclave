@@ -17,10 +17,10 @@ description for the contents of each subfolder:
 | `driver` | A linux kernel module used to interface with PIM as a virtual machine running on top of Memclaves hypervisor. |
 | `hyp` | This folder is used as a target for scripts that generate the Memclave hypervisor from scratch to ease the setup of Memclave on a new system. |
 | `ime` | This folder contains the source of all PIM side programs, including the trusted loader, first stage loader, key exchange subkernels, messaging subkernels, and the subkernel portion of all ported PRiM benchmarks. Furthermore, this folder also contains documentation for the development of new subkernels. |
-| `ime-client-lib` | This folder contains the source of all programs running inside the `guest` system, which is running on top of the Memclave hypervisor. It includes a library interfacing with our linux kernel driver, that provides abstractions similar to UPMEM's host-side library. It also contains the guest side of all ported PRiM benchmarks and documentation for building new Memclave applications. |
+| `ime-client-library` | This folder contains the source of all programs running inside the `guest` system, which is running on top of the Memclave hypervisor. It includes a library interfacing with our linux kernel driver, that provides abstractions similar to UPMEM's host-side library. It also contains the guest side of all ported PRiM benchmarks and documentation for building new Memclave applications. |
 | `mbedtls` | Contains a copy of the `mbedtls` cryptographic library. We use this library for both on-DPU tasks, as well as normal guest-side tasks. |
 | `plotting` | Contains a jupyter notebook we use to generate figures for the paper. |
-| `prim` | PrIM benchmarks we used to get the UPMEM baseline. Our ported benchmarks are in the `ime` and `ime-client-lib` folders. |
+| `prim` | PrIM benchmarks we used to get the UPMEM baseline. Our ported benchmarks are in the `ime` and `ime-client-library` folders. |
 | `qemu` | QEMU forms the other one of the components building the Memclave hypervisor. The folder contains mostly QEMU source code, with patches made to interface with the CI-switch, PIM and the guest OS. |
 | `scripts` | Scripts to set up the Memclave hypervisor. |
 
