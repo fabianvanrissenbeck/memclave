@@ -39,7 +39,7 @@ on a benchmark of ChaCha20's performance on PIM. The benchmark consists of two c
 and a guest side program.
 
 The guest side program is part of the client library examples. It can be build just like all other
-examples in the client library, by running the following commands inside the guest VM and `ime-client-lib`
+examples in the client library, by running the following commands inside the guest VM and `ime-client-library`
 folder:
 ```bash
 cmake -B build .
@@ -59,11 +59,14 @@ into a CSV file passed as a parameter to the executable.
 
 ## PrIM Benchmarks
 
-We have ported 14 out of the 16 PrIM benchmarks to Memclave. The subkernel parts of the ported benchmarks
-are part of the `ime` folder, the guest parts are part of the `ime-client-lib` folder. Both subkernels and
-guest side programs are build via CMake.
+We have ported 16 benchmarks of the PrIM project to Memclave. The subkernel parts of the ported benchmarks
+are part of the `ime` folder, the guest parts are part of the `ime-client-library` folder. Both subkernels and
+guest side programs are build via CMake. We provide a script to run all PrIM benchmarks at once for Memclave,
+as doing this manually would take too much time. Refer to the section below for usage instructions.
 
-To build the guest part of the MLP benchmarks, run the following commands in the `ime-client-lib` folder:
+### Example of Building a Single PrIM Benchmark
+
+To build the guest part of the MLP benchmarks, run the following commands in the `ime-client-library` folder:
 ```bash
 cmake -B build .
 cmake --build build --target ime-mlp-example
@@ -82,6 +85,33 @@ The `mlp-example` subkernel will be located in `./build/mlp-example`. This can n
 You will have to rename the subkernel to `mlp` in this case, as paths for the PrIM benchmarks are hardcoded in
 some cases. Afterwards, you should be able to run `ime-mlp-example`
 from within the build folder, assuming you have moved the `mlp` subkernel to `../build/`.
+
+### Automated Benchmark Execution
+
+We'll start with building the subkernel parts of the PrIM benchmark suite. For this, assuming you are
+currently cd'd into the `ime` folder, run the following chain of commands to create the docker build
+environment and compile all PrIM subkernels:
+```bash
+docker run -it --rm -v ./:/ime memclave:latest bash
+cd /ime
+cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
+cmake --build build --target prim-subkernels
+```
+After compilation, move the subkernels out of the docker container and on to the memclave environment.
+A way to do this, is to first tar the artifacts and then copy out the archive. Assuming your docker
+container has id `4fb4dcbfef03`, the following commands will work:
+```bash
+# start inside the container in /ime
+
+cd build
+tar cf prim-subkernels.tar *-example
+
+# run in a seperate terminal
+docker cp 4fb4dcbfef03:/ime/build/prim-subkernels.tar ~/Downloads/
+```
+Then move the subkernels from your Downloads folder, to your memclave environment.
+
+### PrIM Baseline
 
 We ship the baseline PrIM benchmarks as part of this artifact as well. For these, you'll have to follow the
 usual PrIM usage guidelines. In most cases this involves just compiling via `make` and then running the
