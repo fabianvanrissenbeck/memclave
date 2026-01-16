@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['the_20memclave_20runtime_20library_0',['The Memclave Runtime Library',['../ime-main.html',1,'']]]
+  ['setup_20instruction_20for_20memclave_0',['Setup Instruction for Memclave',['../memclave-setup.html',1,'']]]
 ];

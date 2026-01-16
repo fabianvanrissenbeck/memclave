@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['documentation_0',['Memclave Artifact Documentation',['../index.html',1,'']]]
+  ['client_20library_0',['The Memclave Client Library',['../ime-client-lib-main.html',1,'']]]
 ];

@@ -136,7 +136,12 @@ Automated Benchmark Execution</h3>
 <div class="line"> </div>
 <div class="line"># run in a seperate terminal</div>
 <div class="line">docker cp 4fb4dcbfef03:/ime/build/prim-subkernels.tar ~/Downloads/</div>
-</div><!-- fragment --><p> Then move the subkernels from your Downloads folder, to your memclave environment.</p>
+</div><!-- fragment --><p> Then move the subkernels from your Downloads folder, to your memclave environment. Unpack the into the <code>ime-client-library</code> folder in your Memclave environment. If that folder does not exist yet, copy it over as well.</p>
+<p>To compile the client side of the PrIM benchmarks, run the following commands in the <code>ime-client-library</code> folder in the Memclave environment: </p><div class="fragment"><div class="line">cmake -DCMAKE_BUILD_TYPE=Release -B build .</div>
+<div class="line">cmake --build build --target prim-benchmarks</div>
+</div><!-- fragment --><p>There is a slight mismatch between the subkernel names expected by the benchmarks, and the actual subkernel names. Rename them using the following command: </p><div class="fragment"><div class="line">for name in $(ls | grep -e &#39;-example&#39;); do mv $name ${name%-example}; done</div>
+</div><!-- fragment --><p>No you should be able to run the PrIM suite for Memclave using the <code>run.sh</code> script: </p><div class="fragment"><div class="line">./run.sh all</div>
+</div><!-- fragment --><p> Once the script has run through, the benchmark results are stored in the file <code>./build/prim_results.csv</code>.</p>
 <h3><a class="anchor" id="autotoc_md11"></a>
 PrIM Baseline</h3>
 <p>We ship the baseline PrIM benchmarks as part of this artifact as well. For these, you'll have to follow the usual PrIM usage guidelines. In most cases this involves just compiling via <code>make</code> and then running the generated binary.</p>

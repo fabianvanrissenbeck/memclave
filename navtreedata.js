@@ -35,6 +35,7 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Reproduction Guide for Memclave", "memclave-reprod.html", null ],
+    [ "The Memclave Client Library", "ime-client-lib-main.html", null ],
     [ "The Memclave Runtime Library", "ime-main.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
