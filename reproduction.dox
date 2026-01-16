@@ -137,11 +137,9 @@ Once the script has run through, the benchmark results are stored in the file `.
 
 ### PrIM Baseline
 
-We ship the baseline PrIM benchmarks as part of this artifact as well. For these, you'll have to follow the
-usual PrIM usage guidelines. In most cases this involves just compiling via `make` and then running the
-generated binary.
-
-Both the baseline and our ported benchmarks output data as CSV. From the output you will be able to generate
-Figure 3. in our paper.
+We ship the baseline PrIM benchmarks as part of this artifact as well. To get the baseline numbers, you'll
+have to move to `prim` folder to your UPMEM execution environment. There you'll have to cd into each of
+the benchmarks present in the folder and run `make`. Back in the `prim` folder, you should be able to run the
+script `run_prim.py` using python3, which will generate a file called `prim_results.csv`.
 
 */
