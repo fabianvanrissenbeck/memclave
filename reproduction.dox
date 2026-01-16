@@ -110,6 +110,30 @@ tar cf prim-subkernels.tar *-example
 docker cp 4fb4dcbfef03:/ime/build/prim-subkernels.tar ~/Downloads/
 ```
 Then move the subkernels from your Downloads folder, to your memclave environment.
+Unpack the into the `ime-client-library` folder in your Memclave environment. If that
+folder does not exist yet, copy it over as well.
+
+To compile the client side of the PrIM benchmarks, run the following commands in the
+`ime-client-library` folder in the Memclave environment:
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release -B build .
+cmake --build build --target prim-benchmarks
+```
+
+There is a slight mismatch between the subkernel names expected by the benchmarks, and
+the actual subkernel names. Rename them using the following command:
+```bash
+for name in $(ls | grep -e '-example'); do mv $name ${name%-example}; done
+```
+
+No you should be able to run the PrIM suite for Memclave using the `run.sh` script:
+```bash
+./run.sh all
+```
+Once the script has run through, the benchmark results are stored in the file `./build/prim_results.csv`.
+
+<!-- TODO: Must include BFS dataset somehow in the ime-client-library/data folder -->
+
 
 ### PrIM Baseline
 

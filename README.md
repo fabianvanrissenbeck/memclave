@@ -1,4 +1,4 @@
 # Memclave: Secure In-memory Enclave for Untrusted hosts - Artifact
 
-All our documentation is generated via Doxygen. Refer to docs/html/index.html to get started with the artifact.
+Our documentation is generated via Doxygen. A compiled version can be found on [github pages](https://fabianvanrissenbeck.github.io/memclave).
 
