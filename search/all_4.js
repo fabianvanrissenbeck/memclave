@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['example_20of_20building_20a_20single_20prim_20benchmark_0',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md9',1,'']]],
-  ['execution_1',['Automated Benchmark Execution',['../memclave-reprod.html#autotoc_md10',1,'']]]
+  ['documentation_0',['Memclave Artifact Documentation',['../index.html',1,'']]],
+  ['done_1',['done',['../structime__barrier.html#a6b3d2235244f0a3786220ef807302107',1,'ime_barrier']]]
 ];

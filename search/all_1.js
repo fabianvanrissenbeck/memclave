@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['baseline_0',['PrIM Baseline',['../memclave-reprod.html#autotoc_md11',1,'']]],
-  ['benchmark_1',['benchmark',['../memclave-reprod.html#autotoc_md7',1,'Crypto Benchmark'],['../memclave-reprod.html#autotoc_md9',1,'Example of Building a Single PrIM Benchmark'],['../memclave-reprod.html#autotoc_md6',1,'MRAM Benchmark']]],
-  ['benchmark_20execution_2',['Automated Benchmark Execution',['../memclave-reprod.html#autotoc_md10',1,'']]],
-  ['benchmarks_3',['PrIM Benchmarks',['../memclave-reprod.html#autotoc_md8',1,'']]],
-  ['beyond_20the_20memclave_20setup_4',['Beyond the Memclave Setup',['../memclave-setup.html#autotoc_md5',1,'']]],
-  ['building_20a_20single_20prim_20benchmark_5',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md9',1,'']]],
-  ['building_20the_20containers_6',['Building the Containers',['../memclave-setup.html#autotoc_md2',1,'']]],
-  ['building_20the_20hypervisor_7',['Building the Hypervisor',['../memclave-setup.html#autotoc_md3',1,'']]]
+  ['a_20single_20prim_20benchmark_0',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md9',1,'']]],
+  ['addrs_1',['addrs',['../vud__ime_8h.html#a45efd444cf6bbecd040101b0d5ee61d8',1,'vud_ime.h']]],
+  ['aead_2eh_2',['aead.h',['../aead_8h.html',1,'']]],
+  ['artifact_20documentation_3',['Memclave Artifact Documentation',['../index.html',1,'']]],
+  ['artifact_20structure_4',['Artifact Structure',['../index.html#autotoc_md0',1,'']]],
+  ['automated_20benchmark_20execution_5',['Automated Benchmark Execution',['../memclave-reprod.html#autotoc_md10',1,'']]]
 ];

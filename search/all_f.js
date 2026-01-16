@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['the_20containers_0',['Building the Containers',['../memclave-setup.html#autotoc_md2',1,'']]],
-  ['the_20hypervisor_1',['Building the Hypervisor',['../memclave-setup.html#autotoc_md3',1,'']]],
-  ['the_20memclave_20setup_2',['Beyond the Memclave Setup',['../memclave-setup.html#autotoc_md5',1,'']]],
-  ['the_20virtual_20machine_3',['Launching the Virtual Machine',['../memclave-setup.html#autotoc_md4',1,'']]]
+  ['path_0',['path',['../vud__ime_8h.html#a3b02c6de5c049804444a246f7fdf46b4',1,'vud_ime.h']]],
+  ['paths_1',['paths',['../vud__ime_8h.html#ad29f254689ef8718e0e14c6f7ce1133e',1,'vud_ime.h']]],
+  ['pool_2',['pool',['../structvud__rank.html#acab17305025d9692fb199a7757c6805b',1,'vud_rank']]],
+  ['prim_20baseline_3',['PrIM Baseline',['../memclave-reprod.html#autotoc_md11',1,'']]],
+  ['prim_20benchmark_4',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md9',1,'']]],
+  ['prim_20benchmarks_5',['PrIM Benchmarks',['../memclave-reprod.html#autotoc_md8',1,'']]]
 ];

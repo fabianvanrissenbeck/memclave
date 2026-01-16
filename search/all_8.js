@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['instruction_20for_20memclave_0',['Setup Instruction for Memclave',['../memclave-setup.html',1,'']]]
+  ['hypervisor_0',['Building the Hypervisor',['../memclave-setup.html#autotoc_md3',1,'']]]
 ];
