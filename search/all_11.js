@@ -8,5 +8,5 @@ var searchData=
   ['sk_5flog_5foffset_5',['SK_LOG_OFFSET',['../vud__log_8h.html#a36892964f9c83168c898583249397c94',1,'vud_log.h']]],
   ['sk_5flog_5fsize_5fbytes_6',['SK_LOG_SIZE_BYTES',['../vud__log_8h.html#ac1f21d974c08f6bc3e433a8c9408988d',1,'vud_log.h']]],
   ['structure_7',['Artifact Structure',['../index.html#autotoc_md0',1,'']]],
-  ['subkernels_20for_20memclave_8',['Building Subkernels for Memclave',['../ime-main.html#autotoc_md14',1,'']]]
+  ['subkernels_20for_20memclave_8',['Building Subkernels for Memclave',['../ime-main.html#autotoc_md15',1,'']]]
 ];
