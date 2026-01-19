@@ -16,3 +16,6 @@
 [submodule "qemu"]
 	path = qemu
 	url = git@github.com:fabianvanrissenbeck/memclave-qemu.git
+[submodule "prim-benchmarks"]
+	path = prim-benchmarks
+	url = https://github.com/amit-choudhari/memclave-prim-benchmarks.git
