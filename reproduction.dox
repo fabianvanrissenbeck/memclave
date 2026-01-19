@@ -134,12 +134,66 @@ Once the script has run through, the benchmark results are stored in the file `.
 
 <!-- TODO: Must include BFS dataset somehow in the ime-client-library/data folder -->
 
-
 ### PrIM Baseline
 
 We ship the baseline PrIM benchmarks as part of this artifact as well. To get the baseline numbers, you'll
 have to move to `prim` folder to your UPMEM execution environment. There you'll have to cd into each of
 the benchmarks present in the folder and run `make`. Back in the `prim` folder, you should be able to run the
 script `run_prim.py` using python3, which will generate a file called `prim_results.csv`.
+
+## Microbenchmarks
+
+The measurements reported in Table 2 and 3 can be reproduced using the `sk-load-bench` tool. Just like
+most Memclave programs, it consists of a subkernel and a guest side program. Important for this tool in particular
+though is, that it uses a modified trusted loader, which reports performance stats throughout the decryption
+and load process. Since the TL is embedded as a binary in the FSL, which is embedded in the ci-switch as a binary,
+we'll need to recompile the ci-switch with the modified TL. First move to the `ci-switch` folder on your *development*
+environment and clear all build files:
+```
+cd ci-switch
+rm -rf build
+```
+Then, inside the ci-switch folder, modify the `ime/CMakeLists.txt` file. Find the definition for `IME_REPORT_STATS`
+and set it to `1`. You can also use the command below to enable statistics
+```
+sed -i 's/IME_REPORT_STATS=0/IME_REPORT_STATS=1/' ./ime/CMakeLists.txt
+```
+or this one to disable them (return to a normal build):
+```
+sed -i 's/IME_REPORT_STATS=1/IME_REPORT_STATS=0/' ./ime/CMakeLists.txt
+```
+
+Rebuilding the `ci-switch` is done via the following two commands:
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
+cmake --build build --target ci-switch
+```
+
+If an instance of the `ci-switch` is running, you can stop it without killing the VM. Simply enter Ctrl-C twice
+in the controlling terminal. Then launch the new version.
+
+Once deployed, you can simply build the `sk-load-bench` subkernel in the `ime` folder, just like any other subkernel,
+by first configuring `cmake` and then building the related target:
+```bash
+cmake -DMCAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
+cmake --build build --target sk-load-bench
+```
+
+The same goes for the guest side program also called `sk-load-bench`. Go into the `ime-client-library` folder that
+should be present in your Memclave environment. If not, move it into the Memclave environment. Then run the following
+two commands:
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release -B build
+cmake --build build --target sk-load-bench
+```
+
+Once both sides are compiled, move the subkernel into the `ime-client-library` folder of the Memclave environment
+and cd into the `build` directory. Then you should be able to execute the `sk-load-bench` program. This should execute
+for about 30s.
+
+The tool will output load and unload timings per-DPU of one rank, and the duration the key exchange and DPU ready line took.
+The DPU measurements are reported in DPU clock cycles. They accumulate, so to get the actual decrypt time, one
+has to subtract the auth time first. Our DPUs are clocked at 350 Mhz. Therefore, each of the measurements
+can be divided by 350000000 to obtain a measurement in seconds.
 
 */
