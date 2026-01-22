@@ -9,22 +9,13 @@ if __name__ == "__main__":
     df_mem = pd.read_csv(sys.argv[1])
     df_prim = pd.read_csv(sys.argv[2])
 
-    df_mem.sort_values("Test")
-    df_prim.sort_values("Test")
-
     if set(df_mem["Test"].to_numpy()) != set(df_prim["Test"].to_numpy()):
         print("Tests in the csv files do not match - Cannot join.")
         sys.exit(1)
+
+    for t in df_mem["Test"]:
+        df_prim[df_prim["Test"] == t]["DPU"] = df_mem[df_mem["Test"] == t]["DPU"]
+        df_prim[df_prim["Test"] == t]["M_C2D"] = df_mem[df_mem["Test"] == t]["M_C2D"]
+        df_prim[df_prim["Test"] == t]["M_D2C"] = df_mem[df_mem["Test"] == t]["M_D2C"]
     
-    df = pd.DataFrame()
-
-    df["Test"] = df_mem["Test"]
-    df["CPU"] = df_prim["CPU"]
-    df["DPU"] = df_mem["DPU"]
-    df["M_C2D"] = df_mem["M_C2D"]
-    df["M_D2C"] = df_mem["M_D2C"]
-    df["UPMEM"] = df_prim["UPMEM"]
-    df["U_C2D"] = df_prim["U_C2D"]
-    df["U_D2C"] = df_prim["U_D2C"]
-
-    print(df)
+    df_prim.to_csv("/dev/stdout", index = False)
