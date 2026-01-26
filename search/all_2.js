@@ -7,9 +7,10 @@ var searchData=
   ['benchmark_20execution_4',['Automated Benchmark Execution',['../memclave-reprod.html#autotoc_md10',1,'']]],
   ['benchmarks_5',['PrIM Benchmarks',['../memclave-reprod.html#autotoc_md8',1,'']]],
   ['beyond_20the_20memclave_20setup_6',['Beyond the Memclave Setup',['../memclave-setup.html#autotoc_md5',1,'']]],
-  ['building_20a_20single_20prim_20benchmark_7',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md9',1,'']]],
-  ['building_20subkernels_20for_20memclave_8',['Building Subkernels for Memclave',['../ime-main.html#autotoc_md16',1,'']]],
-  ['building_20the_20client_20library_9',['Building the Client Library',['../ime-client-lib-main.html#autotoc_md14',1,'']]],
-  ['building_20the_20containers_10',['Building the Containers',['../memclave-setup.html#autotoc_md2',1,'']]],
-  ['building_20the_20hypervisor_11',['Building the Hypervisor',['../memclave-setup.html#autotoc_md3',1,'']]]
+  ['bfs_7',['Evaluation of BFS',['../memclave-reprod.html#autotoc_md13',1,'']]],
+  ['building_20a_20single_20prim_20benchmark_8',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md9',1,'']]],
+  ['building_20subkernels_20for_20memclave_9',['Building Subkernels for Memclave',['../ime-main.html#autotoc_md18',1,'']]],
+  ['building_20the_20client_20library_10',['Building the Client Library',['../ime-client-lib-main.html#autotoc_md16',1,'']]],
+  ['building_20the_20containers_11',['Building the Containers',['../memclave-setup.html#autotoc_md2',1,'']]],
+  ['building_20the_20hypervisor_12',['Building the Hypervisor',['../memclave-setup.html#autotoc_md3',1,'']]]
 ];
