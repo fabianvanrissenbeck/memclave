@@ -2,6 +2,27 @@
 
 \page memclave-reprod Reproduction Guide for Memclave
 
+<!---
+
+Idea for complete restructuring
+
+Development wise:
++ First add cmake target for all benchmarks - both subkernel and guest side
++ Restructure setup scripts slightly to build both ci-switch versions. Add extra
+  flag for run.sh script.
++ Aggregation scripts for results
+
+Writing structure:
++ Start with building subkernels in docker and copying them over
++ Assume the artifact folder is already in the memclave environment - Can place it inside the image
++ Build everything guest side
++ Run instructions for everything - MRAM, cypto, prim, prim extra
++ Extra instructions for the microbenchmark run - switch out ci-switch
++ All of the results are dumped into one data/ folder
++ Then all of the plotting and table scripts are executed (maybe also in the memclave environment, to have less copying)
+
+-->
+
 In this guide we provide instructions on reproducing results from our paper. For this guide we assume,
 that you have already read and completed the setup instructions.
 
