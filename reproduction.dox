@@ -160,6 +160,54 @@ From the `final.csv` file you will be able to generate figure 4:
 python3 plotting/plot_speedup.py --csv final.csv
 ```
 
+### Evaluation of BFS
+
+We highlight the BFS workload in more detail in the paper. Assuming you've already completed the PrIM reproduction steps,
+there are only a few steps required for validating our BFS numbers as well. On the memclave environment, cd'd into
+the `ime-client-library` folder, you can simply run the script `run_bfs.py` to obtain the more detailed BFS numbers:
+```bash
+python3 run_bfs.py --mode memclave --cwd ./build --graph-prefix ../data
+```
+This should generate the file `bfs_results.csv`. Similarly, on your UPMEM environment, you can obtain baseline
+numbers by running the same script with different parameters, if you're cd'd into the `prim-benchmarks` folder:
+```bash
+python3 run_bfs.py --mode prim --cwd BFS
+```
+
+This also yields a file named `bfs_results.csv`. Rename the files to `memclave.csv` and `prim.csv` respectively.
+Move them to the same system and run
+```bash
+sed -i --quiet '/Memclave/p' memclave.csv
+sed -i '/Memclave/d' prim.csv
+cat prim.csv memclave.csv > bfs_results.csv
+```
+to concat the results into one file. Afterwards, using the script `plotting/plot_bfs.py` found in the artifact,
+you can generate the plot presented in Figure 6.
+
+### Evaluation of MLP
+
+The results for MLP are obtained in a similar way to that of BFS. You run the `run_mlp.py` script however
+```
+python3 run_mlp.py --mode memclave --cwd build
+```
+to generate the file `mlp_results.csv`. The same thing can be done on the UPMEM environment side to obtain baseline
+results. Inside your `prim-benchmarks` folder, simply run
+```
+python3 run_mlp.py --mode prim --cwd MLP
+```
+which will generate the file `mlp_results.csv`. Copy both of them over to the same system and name them
+`memclave.csv` and `prim.csv` respectively. Concat them using the following commands:
+```bash
+sed -i '/Memclave/d' prim.csv
+sed --quiet -i '/Memclave/p' memclave.csv
+cat prim.csv memclave.csv > mlp_results.csv
+```
+
+This data set can now be used to generate the plot from figure 5 using the `plotting/plot_mlp.py` script:
+```
+python3 plot_mlp.py --csv mlp_results.csv
+```
+
 ## Microbenchmarks
 
 The measurements reported in Table 2 and 3 can be reproduced using the `sk-load-bench` tool. Just like
