@@ -5,7 +5,7 @@ def to_sec(cycles):
     return cycles / 350000000
 
 def to_msec(cycles):
-    return int(cycles / 350000)
+    return cycles / 350000
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -19,6 +19,13 @@ if __name__ == "__main__":
     size = crypto["size"].mean()
     time = to_sec(crypto["cycles"].mean())
     print(f"Sealed EM Transfer: {size / time / 1024 / 1024} MiB/s")
+
+    # numbers reported by subkernel loading benchmark accumulate over time
+    # fix this to get concrete cycle counts per measurement interval
+
+    subk["scan"] -= subk["dec"]
+    subk["dec"] -= subk["auth"]
+    subk["auth"] -= subk["unload"]
 
     sk_auth = subk[subk["auth only"] == True]
     sk_norm = subk[subk["auth only"] == False]
