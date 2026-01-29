@@ -2,6 +2,28 @@
 
 \page memclave-reprod Reproduction Guide for Memclave
 
+<!--
+## New Guide
+
+*Most information skipped, just build steps for my own sanity and to check whether they work*
+
+The first step is to build all subkernels required for our evaluation. On your development environment,
+change into the `ime` directory. There you will find a script `build.sh`, which compiles all required
+subkernels and creates a `.tar` archive out of them. The script requires that you have the `memclave`
+docker container installed. Running the script should take no longer than a minute:
+```bash
+./build.sh
+```
+
+Move the `ime-client-library` folder into your memclave environment, if it is not already present there.
+Move the `subkernels.tar` file, produced in the last step, into the `ime-client-library` folder.
+Now you should be able to execute the `build.sh` script, which compiles the guest side portions of
+our benchmarks. The build process should take no longer than a minute:
+```
+./build.sh
+```
+-->
+
 <!---
 
 Idea for complete restructuring
