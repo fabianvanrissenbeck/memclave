@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('memclave-reprod.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>In this guide we provide instructions on reproducing results from our paper. For this guide we assume, that you have already read and completed the setup instructions.</p>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 MRAM Benchmark</h2>
 <p>The results of this benchmark are reported in Table 4 of our paper. The benchmark relies only on code part of the client library and its examples. It can be run on UPMEM and on Memclave, which one is selected using a CMake option. To build the Memclave version, run the following chain of commands in the guest VM: </p><div class="fragment"><div class="line">cmake -DENABLE_UPMEM_BENCHMARK=OFF -B build-mram-memclave .</div>
 <div class="line">cmake --build build-mram-memclave --target mram</div>
@@ -101,7 +101,7 @@ MRAM Benchmark</h2>
 </div><!-- fragment --><p>Building the UPMEM version is quite similar, you run almost the same commands, but on a normal UPMEM machine and not the VM: </p><div class="fragment"><div class="line">cmake -DENABLE_UPMEM_BENCHMARK=ON -b build-mram-upmem .</div>
 <div class="line">cmake --build build-mram-upmem --target mram</div>
 </div><!-- fragment --><p> Execution works the same way. Simply capture the output into a file: </p><div class="fragment"><div class="line">./build-mram-upmem/mram &gt; mram-upmem.csv</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md8"></a>
 Crypto Benchmark</h2>
 <p>We present the performance of sealed EM transfer in table 3 of our paper. This measurement is based on a benchmark of ChaCha20's performance on PIM. The benchmark consists of two components, a subkernel and a guest side program.</p>
 <p>The guest side program is part of the client library examples. It can be build just like all other examples in the client library, by running the following commands inside the guest VM and <code>ime-client-library</code> folder: </p><div class="fragment"><div class="line">cmake -B build .</div>
@@ -111,10 +111,10 @@ Crypto Benchmark</h2>
 <div class="line">cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build</div>
 <div class="line">cmake --build build --target chacha-bench</div>
 </div><!-- fragment --><p> Now simply move the <code>chacha-bench</code> subkernel to the guest VM and execute the benchmark. Results are written into a CSV file passed as a parameter to the executable.</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 PrIM Benchmarks</h2>
 <p>We have ported 16 benchmarks of the PrIM project to Memclave. The subkernel parts of the ported benchmarks are part of the <code>ime</code> folder, the guest parts are part of the <code>ime-client-library</code> folder. Both subkernels and guest side programs are build via CMake. We provide a script to run all PrIM benchmarks at once for Memclave, as doing this manually would take too much time. Refer to the section below for usage instructions.</p>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<h3><a class="anchor" id="autotoc_md10"></a>
 Example of Building a Single PrIM Benchmark</h3>
 <p>To build the guest part of the MLP benchmarks, run the following commands in the <code>ime-client-library</code> folder: </p><div class="fragment"><div class="line">cmake -B build .</div>
 <div class="line">cmake --build build --target ime-mlp-example</div>
@@ -123,7 +123,7 @@ Example of Building a Single PrIM Benchmark</h3>
 <div class="line">cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build</div>
 <div class="line">cmake --build build --target mlp-example</div>
 </div><!-- fragment --><p>The <code>mlp-example</code> subkernel will be located in <code>./build/mlp-example</code>. This can now be moved the the guest system. You will have to rename the subkernel to <code>mlp</code> in this case, as paths for the PrIM benchmarks are hardcoded in some cases. Afterwards, you should be able to run <code>ime-mlp-example</code> from within the build folder, assuming you have moved the <code>mlp</code> subkernel to <code>../build/</code>.</p>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<h3><a class="anchor" id="autotoc_md11"></a>
 Automated Benchmark Execution</h3>
 <p>We'll start with building the subkernel parts of the PrIM benchmark suite. For this, assuming you are currently cd'd into the <code>ime</code> folder, run the following chain of commands to create the docker build environment and compile all PrIM subkernels: </p><div class="fragment"><div class="line">docker run -it --rm -v ./:/ime memclave:latest bash</div>
 <div class="line">cd /ime</div>
@@ -142,15 +142,15 @@ Automated Benchmark Execution</h3>
 </div><!-- fragment --><p>There is a slight mismatch between the subkernel names expected by the benchmarks, and the actual subkernel names. Rename them using the following command: </p><div class="fragment"><div class="line">for name in $(ls | grep -e &#39;-example&#39;); do mv $name ${name%-example}; done</div>
 </div><!-- fragment --><p>No you should be able to run the PrIM suite for Memclave using the <code>run.sh</code> script: </p><div class="fragment"><div class="line">./run.sh all</div>
 </div><!-- fragment --><p> Once the script has run through, the benchmark results are stored in the file <code>./build/prim_results.csv</code>.</p>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
 PrIM Baseline</h3>
 <p>We ship the baseline PrIM benchmarks as part of this artifact as well. To get the baseline numbers, you'll have to move to <code>prim-benchmarks</code> folder to your UPMEM execution environment. There you can simply run the <code>run_prim.py</code> script, which should generate the <code>prim_results.csv</code> file. This file is already present in the artifact and will be replaced: </p><div class="fragment"><div class="line">python3 run_prim.py</div>
 </div><!-- fragment --><p> The script may first download some test data from zenodo, that was published alongside the PrIM project. Afterwards, it should finish in a bit more than a minute.</p>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 Generating The Plot</h3>
 <p>The large plot presented in figure 4 is generated based on the two <code>prim_results.csv</code> files generated by Memclave and the baseline. Both files have to be joined together, before the final plot generation script can be executed. Assuming you've named the files <code>memclave.csv</code> and <code>prim.csv</code> respectively, the following will join both datasets into one: </p><div class="fragment"><div class="line">python3 plotting/concat_results.py memclave.csv prim.csv &gt; final.csv</div>
 </div><!-- fragment --><p> From the <code>final.csv</code> file you will be able to generate figure 4: </p><div class="fragment"><div class="line">python3 plotting/plot_speedup.py --csv <span class="keyword">final</span>.csv</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md14"></a>
 Evaluation of BFS</h3>
 <p>We highlight the BFS workload in more detail in the paper. Assuming you've already completed the PrIM reproduction steps, there are only a few steps required for validating our BFS numbers as well. On the memclave environment, cd'd into the <code>ime-client-library</code> folder, you can simply run the script <code>run_bfs.py</code> to obtain the more detailed BFS numbers: </p><div class="fragment"><div class="line">python3 run_bfs.py --mode memclave --cwd ./build --graph-prefix ../data</div>
 </div><!-- fragment --><p> This should generate the file <code>bfs_results.csv</code>. Similarly, on your UPMEM environment, you can obtain baseline numbers by running the same script with different parameters, if you're cd'd into the <code>prim-benchmarks</code> folder: </p><div class="fragment"><div class="line">python3 run_bfs.py --mode prim --cwd BFS</div>
@@ -158,7 +158,7 @@ Evaluation of BFS</h3>
 <div class="line">sed -i &#39;/Memclave/d&#39; prim.csv</div>
 <div class="line">cat prim.csv memclave.csv &gt; bfs_results.csv</div>
 </div><!-- fragment --><p> to concat the results into one file. Afterwards, using the script <code>plotting/plot_bfs.py</code> found in the artifact, you can generate the plot presented in Figure 6.</p>
-<h3><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md15"></a>
 Evaluation of MLP</h3>
 <p>The results for MLP are obtained in a similar way to that of BFS. You run the <code>run_mlp.py</code> script however </p><div class="fragment"><div class="line">python3 run_mlp.py --mode memclave --cwd build</div>
 </div><!-- fragment --><p> to generate the file <code>mlp_results.csv</code>. The same thing can be done on the UPMEM environment side to obtain baseline results. Inside your <code>prim-benchmarks</code> folder, simply run </p><div class="fragment"><div class="line">python3 run_mlp.py --mode prim --cwd MLP</div>
@@ -166,7 +166,7 @@ Evaluation of MLP</h3>
 <div class="line">sed --quiet -i &#39;/Memclave/p&#39; memclave.csv</div>
 <div class="line">cat prim.csv memclave.csv &gt; mlp_results.csv</div>
 </div><!-- fragment --><p>This data set can now be used to generate the plot from figure 5 using the <code>plotting/plot_mlp.py</code> script: </p><div class="fragment"><div class="line">python3 plot_mlp.py --csv mlp_results.csv</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
 Microbenchmarks</h2>
 <p>The measurements reported in Table 2 and 3 can be reproduced using the <code>sk-load-bench</code> tool. Just like most Memclave programs, it consists of a subkernel and a guest side program. Important for this tool in particular though is, that it uses a modified trusted loader, which reports performance stats throughout the decryption and load process. Since the TL is embedded as a binary in the FSL, which is embedded in the ci-switch as a binary, we'll need to recompile the ci-switch with the modified TL. First move to the <code>ci-switch</code> folder on your <em>development</em> environment and clear all build files: </p><div class="fragment"><div class="line">cd ci-<span class="keywordflow">switch</span></div>
 <div class="line">rm -rf build</div>
