@@ -92,7 +92,14 @@ $(document).ready(function(){initNavTree('memclave-reprod.html',''); initResizab
   <div class="headertitle"><div class="title">Reproduction Guide for Memclave</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>In this guide we provide instructions on reproducing results from our paper. For this guide we assume, that you have already read and completed the setup instructions.</p>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md6"></a>
+New Guide</h2>
+<p>Most information skipped, just build steps for my own sanity and to check whether they work*</p>
+<p>The first step is to build all subkernels required for our evaluation. On your development environment, change into the <code>ime</code> directory. There you will find a script <code>build.sh</code>, which compiles all required subkernels and creates a <code>.tar</code> archive out of them. The script requires that you have the <code>memclave</code> docker container installed. Running the script should take no longer than a minute: </p><div class="fragment"><div class="line">./build.sh</div>
+</div><!-- fragment --><p>Move the <code>ime-client-library</code> folder into your memclave environment, if it is not already present there. Move the <code>subkernels.tar</code> file, produced in the last step, into the <code>ime-client-library</code> folder. Now you should be able to execute the <code>build.sh</code> script, which compiles the guest side portions of our benchmarks. The build process should take no longer than a minute: </p><div class="fragment"><div class="line">./build.sh</div>
+</div><!-- fragment --><p>With compilation finished, you should be able to run all benchmarks in your memclave environment, except for one which is described below by using the <code>run.sh</code> script. Simply type </p><div class="fragment"><div class="line">./run.sh</div>
+</div><!-- fragment --><p> into your terminal.</p>
+<p>In this guide we provide instructions on reproducing results from our paper. For this guide we assume, that you have already read and completed the setup instructions.</p>
 <h2><a class="anchor" id="autotoc_md7"></a>
 MRAM Benchmark</h2>
 <p>The results of this benchmark are reported in Table 4 of our paper. The benchmark relies only on code part of the client library and its examples. It can be run on UPMEM and on Memclave, which one is selected using a CMake option. To build the Memclave version, run the following chain of commands in the guest VM: </p><div class="fragment"><div class="line">cmake -DENABLE_UPMEM_BENCHMARK=OFF -B build-mram-memclave .</div>
