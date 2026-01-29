@@ -15,3 +15,9 @@ cp ${MEMCLAVE_ROOT}/ci-switch/build/ci-switch-stats ${MEMCLAVE_ROOT}/hyp/bin
 cp ${MEMCLAVE_ROOT}/scripts/hyp/boot.sh ${MEMCLAVE_ROOT}/hyp
 cp ${MEMCLAVE_ROOT}/scripts/hyp/boot.sh ${MEMCLAVE_ROOT}/hyp/boot-stats.sh
 sed -i 's/ci-switch/ci-switch-stats/' ${MEMCLAVE_ROOT}/hyp/boot-stats.sh
+cd ${MEMCLAVE_ROOT}
+echo "Build finished. Archiving hypervisor components."
+tar cf hyp.tar hyp
+echo "Created hyp.tar. Compressing."
+xz -0 hyp.tar
+echo "Build finished. You can move hyp.tar.xz to your execution environment."
