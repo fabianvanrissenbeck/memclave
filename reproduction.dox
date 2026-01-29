@@ -2,7 +2,6 @@
 
 \page memclave-reprod Reproduction Guide for Memclave
 
-<!--
 ## New Guide
 
 *Most information skipped, just build steps for my own sanity and to check whether they work*
@@ -22,7 +21,13 @@ our benchmarks. The build process should take no longer than a minute:
 ```
 ./build.sh
 ```
--->
+
+With compilation finished, you should be able to run all benchmarks in your memclave environment, except
+for one which is described below by using the `run.sh` script. Simply type
+```
+./run.sh
+```
+into your terminal.
 
 <!---
 

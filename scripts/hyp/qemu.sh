@@ -2,8 +2,6 @@
 set -euxo pipefail
 
 cd /memclave
-rm -rf ./qemu/common
-cp -r ./common ./qemu
 cd qemu
 mkdir -p build
 cd build
