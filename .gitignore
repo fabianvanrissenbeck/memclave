@@ -4,3 +4,4 @@ memclave-qemu.tar
 memclave.tar
 docs/
 !scripts/hyp
+*.pdf

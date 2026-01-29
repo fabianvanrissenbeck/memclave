@@ -49,6 +49,13 @@ script to execute all benchmarks:
 ./run.sh
 ```
 
+Both the memclave and UPMEM benchmarks should have generated a file `output.tar`. Move those to your development
+environment, and rename them `upmem.tar` and `memclave.tar` respectively. Then run the script `plotting/plot_all.sh`
+to generate all figures present in the paper, and to print out table contents into the terminal:
+```
+./plot_all.sh memclave.tar upmem.tar
+```
+
 <!---
 
 Idea for complete restructuring

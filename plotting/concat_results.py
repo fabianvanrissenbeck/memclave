@@ -1,4 +1,6 @@
+from dataclasses import dataclass
 import pandas as pd
+import numpy as np
 import sys
 
 if __name__ == "__main__":
@@ -13,9 +15,25 @@ if __name__ == "__main__":
         print("Tests in the csv files do not match - Cannot join.")
         sys.exit(1)
 
-    for t in df_mem["Test"]:
-        df_prim[df_prim["Test"] == t]["DPU"] = df_mem[df_mem["Test"] == t]["DPU"]
-        df_prim[df_prim["Test"] == t]["M_C2D"] = df_mem[df_mem["Test"] == t]["M_C2D"]
-        df_prim[df_prim["Test"] == t]["M_D2C"] = df_mem[df_mem["Test"] == t]["M_D2C"]
+    res = []
+
+    for _, row in df_prim.iterrows():
+        cur = {}
+
+        cur["Test"] = row["Test"]
+        cur["CPU"] = row["CPU"]
+        cur["UPMEM"] = row["UPMEM"]
+        cur["U_C2D"] = row["U_C2D"]
+        cur["U_D2C"] = row["U_D2C"]
+
+        res.append(cur)
     
-    df_prim.to_csv("/dev/stdout", index = False)
+    for _, row in df_mem.iterrows():
+        cur = [cur for cur in res if cur["Test"] == row["Test"]][0]
+
+        cur["DPU"] = row["DPU"]
+        cur["M_C2D"] = row["M_C2D"]
+        cur["M_D2C"] = row["M_D2C"]
+
+    df = pd.DataFrame(data=res)
+    df.to_csv("/dev/stdout", index=False)
