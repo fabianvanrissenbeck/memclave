@@ -2,15 +2,12 @@
 
 \page memclave-reprod Reproduction Guide for Memclave
 
-## New Guide
-
-*Most information skipped, just build steps for my own sanity and to check whether they work*
-
 The first step is to build all subkernels required for our evaluation. On your development environment,
 change into the `ime` directory. There you will find a script `build.sh`, which compiles all required
 subkernels and creates a `.tar` archive out of them. The script requires that you have the `memclave`
 docker container installed. Running the script should take no longer than a minute:
 ```bash
+# dev environment: ./ime
 ./build.sh
 ```
 
@@ -19,12 +16,14 @@ Move the `subkernels.tar` file, produced in the last step, into the `ime-client-
 Now you should be able to execute the `build.sh` script, which compiles the guest side portions of
 our benchmarks. The build process should take no longer than a minute:
 ```
+# memclave-environment: ./ime-client-library/
 ./build.sh
 ```
 
 With compilation finished, you should be able to run all benchmarks in your memclave environment, except
 for one which is described below by using the `run.sh` script. Simply type
 ```
+# memclave-environment: ./ime-client-library
 ./run.sh
 ```
 into your terminal.
@@ -35,6 +34,7 @@ the hypervisor with the modified TL. Shut down the memclave environment and boot
 `boot-stats.sh` script. Once booted, perform the same setup steps, such as loading the kernel driver.
 Now change into your `ime-client-library` directory and execute
 ```
+# memclave-environment (modified TL): ./ime-client-library
 ./run.sh subk
 ```
 which will perform the final memclave benchmark.
@@ -55,287 +55,5 @@ to generate all figures present in the paper, and to print out table contents in
 ```
 ./plot_all.sh memclave.tar upmem.tar
 ```
-
-<!---
-
-Idea for complete restructuring
-
-Development wise:
-+ First add cmake target for all benchmarks - both subkernel and guest side
-+ Restructure setup scripts slightly to build both ci-switch versions. Add extra
-  flag for run.sh script.
-+ Aggregation scripts for results
-
-Writing structure:
-+ Start with building subkernels in docker and copying them over
-+ Assume the artifact folder is already in the memclave environment - Can place it inside the image
-+ Build everything guest side
-+ Run instructions for everything - MRAM, cypto, prim, prim extra
-+ Extra instructions for the microbenchmark run - switch out ci-switch
-+ All of the results are dumped into one data/ folder
-+ Then all of the plotting and table scripts are executed (maybe also in the memclave environment, to have less copying)
-
--->
-
-In this guide we provide instructions on reproducing results from our paper. For this guide we assume,
-that you have already read and completed the setup instructions.
-
-## MRAM Benchmark
-
-The results of this benchmark are reported in Table 4 of our paper. The benchmark relies only
-on code part of the client library and its examples. It can be run on UPMEM and on Memclave,
-which one is selected using a CMake option. To build the Memclave version, run the following
-chain of commands in the guest VM:
-```bash
-cmake -DENABLE_UPMEM_BENCHMARK=OFF -B build-mram-memclave .
-cmake --build build-mram-memclave --target mram
-```
-This should yield an executable `build-mram-memclave/mram`. This executable outputs measurements
-formatted as CSV on the command line. Capture the output like this:
-```bash
-./build-mram-memclave/mram > mram.csv
-```
-
-Building the UPMEM version is quite similar, you run almost the same commands, but on a normal
-UPMEM machine and not the VM:
-```bash
-cmake -DENABLE_UPMEM_BENCHMARK=ON -b build-mram-upmem .
-cmake --build build-mram-upmem --target mram
-```
-Execution works the same way. Simply capture the output into a file:
-```bash
-./build-mram-upmem/mram > mram-upmem.csv
-```
-
-## Crypto Benchmark
-
-We present the performance of sealed EM transfer in table 3 of our paper. This measurement is based
-on a benchmark of ChaCha20's performance on PIM. The benchmark consists of two components, a subkernel
-and a guest side program.
-
-The guest side program is part of the client library examples. It can be build just like all other
-examples in the client library, by running the following commands inside the guest VM and `ime-client-library`
-folder:
-```bash
-cmake -B build .
-cmake --build build --target crypto-bench
-```
-
-The build process for the crypto benchmark is similarly straight-forward: Assuming you're currently cd'd
-into the `ime` folder, running the following chain of commands will build the ChaCha20 benchmark subkernel:
-```bash
-docker run -it --rm -v ./:/ime memclave:latest bash
-cd /ime
-cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
-cmake --build build --target chacha-bench
-```
-Now simply move the `chacha-bench` subkernel to the guest VM and execute the benchmark. Results are written
-into a CSV file passed as a parameter to the executable.
-
-## PrIM Benchmarks
-
-We have ported 16 benchmarks of the PrIM project to Memclave. The subkernel parts of the ported benchmarks
-are part of the `ime` folder, the guest parts are part of the `ime-client-library` folder. Both subkernels and
-guest side programs are build via CMake. We provide a script to run all PrIM benchmarks at once for Memclave,
-as doing this manually would take too much time. Refer to the section below for usage instructions.
-
-### Example of Building a Single PrIM Benchmark
-
-To build the guest part of the MLP benchmarks, run the following commands in the `ime-client-library` folder:
-```bash
-cmake -B build .
-cmake --build build --target ime-mlp-example
-```
-
-The subkernel can be build using the `memclave` docker container as a build environment. Assuming you are
-currently cd'd into the `ime` folder, running the following chain of commands will build the MLP subkernel:
-```bash
-docker run -it --rm -v ./:/ime memclave:latest bash
-cd /ime
-cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
-cmake --build build --target mlp-example
-```
-
-The `mlp-example` subkernel will be located in `./build/mlp-example`. This can now be moved the the guest system.
-You will have to rename the subkernel to `mlp` in this case, as paths for the PrIM benchmarks are hardcoded in
-some cases. Afterwards, you should be able to run `ime-mlp-example`
-from within the build folder, assuming you have moved the `mlp` subkernel to `../build/`.
-
-### Automated Benchmark Execution
-
-We'll start with building the subkernel parts of the PrIM benchmark suite. For this, assuming you are
-currently cd'd into the `ime` folder, run the following chain of commands to create the docker build
-environment and compile all PrIM subkernels:
-```bash
-docker run -it --rm -v ./:/ime memclave:latest bash
-cd /ime
-cmake -DCMAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
-cmake --build build --target prim-subkernels
-```
-After compilation, move the subkernels out of the docker container and on to the memclave environment.
-A way to do this, is to first tar the artifacts and then copy out the archive. Assuming your docker
-container has id `4fb4dcbfef03`, the following commands will work:
-```bash
-# start inside the container in /ime
-
-cd build
-tar cf prim-subkernels.tar *-example
-
-# run in a seperate terminal
-docker cp 4fb4dcbfef03:/ime/build/prim-subkernels.tar ~/Downloads/
-```
-Then move the subkernels from your Downloads folder, to your memclave environment.
-Unpack the into the `ime-client-library` folder in your Memclave environment. If that
-folder does not exist yet, copy it over as well.
-
-To compile the client side of the PrIM benchmarks, run the following commands in the
-`ime-client-library` folder in the Memclave environment:
-```bash
-cmake -DCMAKE_BUILD_TYPE=Release -B build .
-cmake --build build --target prim-benchmarks
-```
-
-There is a slight mismatch between the subkernel names expected by the benchmarks, and
-the actual subkernel names. Rename them using the following command:
-```bash
-for name in $(ls | grep -e '-example'); do mv $name ${name%-example}; done
-```
-
-No you should be able to run the PrIM suite for Memclave using the `run.sh` script:
-```bash
-./run.sh all
-```
-Once the script has run through, the benchmark results are stored in the file `./build/prim_results.csv`.
-
-<!-- TODO: Must include BFS dataset somehow in the ime-client-library/data folder -->
-
-### PrIM Baseline
-
-We ship the baseline PrIM benchmarks as part of this artifact as well. To get the baseline numbers, you'll
-have to move to `prim-benchmarks` folder to your UPMEM execution environment. There you can simply
-run the `run_prim.py` script, which should generate the `prim_results.csv` file. This file is already present
-in the artifact and will be replaced:
-```bash
-python3 run_prim.py
-```
-The script may first download some test data from zenodo, that was published alongside the PrIM project.
-Afterwards, it should finish in a bit more than a minute.
-
-### Generating The Plot
-
-The large plot presented in figure 4 is generated based on the two `prim_results.csv` files generated by Memclave
-and the baseline. Both files have to be joined together, before the final plot generation script can be executed.
-Assuming you've named the files `memclave.csv` and `prim.csv` respectively, the following will join both datasets into
-one:
-```bash
-python3 plotting/concat_results.py memclave.csv prim.csv > final.csv
-```
-From the `final.csv` file you will be able to generate figure 4:
-```
-python3 plotting/plot_speedup.py --csv final.csv
-```
-
-### Evaluation of BFS
-
-We highlight the BFS workload in more detail in the paper. Assuming you've already completed the PrIM reproduction steps,
-there are only a few steps required for validating our BFS numbers as well. On the memclave environment, cd'd into
-the `ime-client-library` folder, you can simply run the script `run_bfs.py` to obtain the more detailed BFS numbers:
-```bash
-python3 run_bfs.py --mode memclave --cwd ./build --graph-prefix ../data
-```
-This should generate the file `bfs_results.csv`. Similarly, on your UPMEM environment, you can obtain baseline
-numbers by running the same script with different parameters, if you're cd'd into the `prim-benchmarks` folder:
-```bash
-python3 run_bfs.py --mode prim --cwd BFS
-```
-
-This also yields a file named `bfs_results.csv`. Rename the files to `memclave.csv` and `prim.csv` respectively.
-Move them to the same system and run
-```bash
-sed -i --quiet '/Memclave/p' memclave.csv
-sed -i '/Memclave/d' prim.csv
-cat prim.csv memclave.csv > bfs_results.csv
-```
-to concat the results into one file. Afterwards, using the script `plotting/plot_bfs.py` found in the artifact,
-you can generate the plot presented in Figure 6.
-
-### Evaluation of MLP
-
-The results for MLP are obtained in a similar way to that of BFS. You run the `run_mlp.py` script however
-```
-python3 run_mlp.py --mode memclave --cwd build
-```
-to generate the file `mlp_results.csv`. The same thing can be done on the UPMEM environment side to obtain baseline
-results. Inside your `prim-benchmarks` folder, simply run
-```
-python3 run_mlp.py --mode prim --cwd MLP
-```
-which will generate the file `mlp_results.csv`. Copy both of them over to the same system and name them
-`memclave.csv` and `prim.csv` respectively. Concat them using the following commands:
-```bash
-sed -i '/Memclave/d' prim.csv
-sed --quiet -i '/Memclave/p' memclave.csv
-cat prim.csv memclave.csv > mlp_results.csv
-```
-
-This data set can now be used to generate the plot from figure 5 using the `plotting/plot_mlp.py` script:
-```
-python3 plot_mlp.py --csv mlp_results.csv
-```
-
-## Microbenchmarks
-
-The measurements reported in Table 2 and 3 can be reproduced using the `sk-load-bench` tool. Just like
-most Memclave programs, it consists of a subkernel and a guest side program. Important for this tool in particular
-though is, that it uses a modified trusted loader, which reports performance stats throughout the decryption
-and load process. Since the TL is embedded as a binary in the FSL, which is embedded in the ci-switch as a binary,
-we'll need to recompile the ci-switch with the modified TL. First move to the `ci-switch` folder on your *development*
-environment and clear all build files:
-```
-cd ci-switch
-rm -rf build
-```
-Then, inside the ci-switch folder, modify the `ime/CMakeLists.txt` file. Find the definition for `IME_REPORT_STATS`
-and set it to `1`. You can also use the command below to enable statistics
-```
-sed -i 's/IME_REPORT_STATS=0/IME_REPORT_STATS=1/' ./ime/CMakeLists.txt
-```
-or this one to disable them (return to a normal build):
-```
-sed -i 's/IME_REPORT_STATS=1/IME_REPORT_STATS=0/' ./ime/CMakeLists.txt
-```
-
-Rebuilding the `ci-switch` is done via the following two commands:
-```bash
-cmake -DCMAKE_BUILD_TYPE=Debug -B build
-cmake --build build --target ci-switch
-```
-
-If an instance of the `ci-switch` is running, you can stop it without killing the VM. Simply enter Ctrl-C twice
-in the controlling terminal. Then launch the new version.
-
-Once deployed, you can simply build the `sk-load-bench` subkernel in the `ime` folder, just like any other subkernel,
-by first configuring `cmake` and then building the related target:
-```bash
-cmake -DMCAKE_TOOLCHAIN_FILE=/usr/share/upmem/cmake/dpu.cmake -B build
-cmake --build build --target sk-load-bench
-```
-
-The same goes for the guest side program also called `sk-load-bench`. Go into the `ime-client-library` folder that
-should be present in your Memclave environment. If not, move it into the Memclave environment. Then run the following
-two commands:
-```bash
-cmake -DCMAKE_BUILD_TYPE=Release -B build
-cmake --build build --target sk-load-bench
-```
-
-Once both sides are compiled, move the subkernel into the `ime-client-library` folder of the Memclave environment
-and cd into the `build` directory. Then you should be able to execute the `sk-load-bench` program. This should execute
-for about 30s.
-
-The tool will output load and unload timings per-DPU of one rank, and the duration the key exchange and DPU ready line took.
-The DPU measurements are reported in DPU clock cycles. They accumulate, so to get the actual decrypt time, one
-has to subtract the auth time first. Our DPUs are clocked at 350 Mhz. Therefore, each of the measurements
-can be divided by 350000000 to obtain a measurement in seconds.
 
 */
