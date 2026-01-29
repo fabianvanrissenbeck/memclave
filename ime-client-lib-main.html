@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('ime-client-lib-main.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>The Memclave Client Library is used to interact with PIM ranks running Memclave. It serves as a replacement to UPMEM's host library and follows a similar programming paradigm. These pages document the libraries usage.</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Building the Client Library</h2>
 <p>The Memclave Client Library is meant to be used together with other CMake based projects. A viable <code>CMakeLists.txt</code> for the project below could be </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20)</div>
 <div class="line">project(add-example C)</div>
@@ -105,7 +105,7 @@ Building the Client Library</h2>
 <div class="line">add_executable(add add.c)</div>
 <div class="line">target_link_library(add PUBLIC ime-client-lib)</div>
 </div><!-- fragment --><p> which would build the addition example. The subkernel still has to be build seperately.</p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 Usage Example</h2>
 <p>We demonstrate a simple use-case as a usage example: A program that adds two integer vectors by transfering them to a PIM rank and then reads the result. First, just like in UPMEM's case, we have to allocate a rank of DPUs: </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structvud__rank.html">vud_rank</a> r = <a class="code hl_function" href="vud_8h.html#afc174134bc542653d8bf81b3764c4152">vud_rank_alloc</a>(<a class="code hl_define" href="vud_8h.html#a04c17d83e5bb99554b6ef95acce993cf">VUD_ALLOC_ANY</a>);</div>
 <div class="line"> </div>

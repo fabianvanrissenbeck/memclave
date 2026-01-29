@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['setup_0',['setup',['../memclave-setup.html#autotoc_md5',1,'Beyond the Memclave Setup'],['../index.html#autotoc_md1',1,'Setup']]],
-  ['setup_20instruction_20for_20memclave_1',['Setup Instruction for Memclave',['../memclave-setup.html',1,'']]],
-  ['setup_2edox_2',['setup.dox',['../setup_8dox.html',1,'']]],
-  ['single_20prim_20benchmark_3',['Example of Building a Single PrIM Benchmark',['../memclave-reprod.html#autotoc_md10',1,'']]],
-  ['sk_5flog_5fmax_5fentries_4',['SK_LOG_MAX_ENTRIES',['../vud__log_8h.html#a8e14bdac52cc77add6f854fd6773cf36',1,'vud_log.h']]],
-  ['sk_5flog_5foffset_5',['SK_LOG_OFFSET',['../vud__log_8h.html#a36892964f9c83168c898583249397c94',1,'vud_log.h']]],
-  ['sk_5flog_5fsize_5fbytes_6',['SK_LOG_SIZE_BYTES',['../vud__log_8h.html#ac1f21d974c08f6bc3e433a8c9408988d',1,'vud_log.h']]],
-  ['structure_7',['Artifact Structure',['../index.html#autotoc_md0',1,'']]],
-  ['subkernels_20for_20memclave_8',['Building Subkernels for Memclave',['../ime-main.html#autotoc_md19',1,'']]]
+  ['tag_0',['tag',['../structime__load__params.html#a8ea25dffd3a88fcd9c8d4e9479c58760',1,'ime_load_params']]],
+  ['the_20client_20library_1',['Building the Client Library',['../ime-client-lib-main.html#autotoc_md6',1,'']]],
+  ['the_20containers_2',['Building the Containers',['../memclave-setup.html#autotoc_md2',1,'']]],
+  ['the_20hypervisor_3',['Building the Hypervisor',['../memclave-setup.html#autotoc_md3',1,'']]],
+  ['the_20memclave_20client_20library_4',['The Memclave Client Library',['../ime-client-lib-main.html',1,'']]],
+  ['the_20memclave_20runtime_20library_5',['The Memclave Runtime Library',['../ime-main.html',1,'']]],
+  ['the_20memclave_20setup_6',['Beyond the Memclave Setup',['../memclave-setup.html#autotoc_md5',1,'']]],
+  ['the_20virtual_20machine_7',['Launching the Virtual Machine',['../memclave-setup.html#autotoc_md4',1,'']]]
 ];

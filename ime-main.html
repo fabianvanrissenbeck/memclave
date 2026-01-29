@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('ime-main.html',''); initResizable(); }
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>The memclave runtime library is linked against every subkernel that can be used for Memclave. It modifies linking behavior of UPMEM's toolchain, provides replacements for some of UPMEM's library routines (such as barriers) and allows accessing some of the <em>loader's</em> built-in cryptographic primitives, such as the ChaCha20-Poly1305 AEAD.</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 Building Subkernels for Memclave</h2>
 <p>Subkernels are usually build on a normal x86 machine using UPMEM's DPU cross-compiler, which is based on <code>clang</code>. Memclave introduces a slightly modified ABI by restricting access to two general purpose register <code>r20</code> and <code>r21</code>, requiring a modified toolchain. We provide this toolchain in form of a docker container. You may import the image provided or build it yourself. Refer to the setup guide for more information.</p>
 <p>We recommend building subkernels using the CMake build tool. You may use other build systems as well. As a short starting point, we'll describe creating a simple subkernel with the purpose of adding to integer vectors in EM. For this, create a new folder called <code>add</code> and then run an instance of our development container <code>memclave:latest</code> with the folder mounted inside of it:</p>
