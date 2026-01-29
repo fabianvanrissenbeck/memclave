@@ -29,6 +29,26 @@ for one which is described below by using the `run.sh` script. Simply type
 ```
 into your terminal.
 
+There is one other measurement that needs to be taken using a modified version of the TL, which reports
+performance stats while loading subkernels in MRAM. We provide a modified `boot.sh` script to boot up
+the hypervisor with the modified TL. Shut down the memclave environment and boot it up again using the
+`boot-stats.sh` script. Once booted, perform the same setup steps, such as loading the kernel driver.
+Now change into your `ime-client-library` directory and execute
+```
+./run.sh subk
+```
+which will perform the final memclave benchmark.
+
+To measure baseline performance, some of the same benchmarks need to be build on the execution environment.
+Move the `prim-benchmarks` folder of the artifact to the execution environment. Then move the `ime-client-library`
+folder into the `prim-benchmarks` folder on your execution environment. The latter is needed because the MRAM
+benchmark is written agnostic to whether Memclave or UPMEM is used as the guest-side library. 
+There is no build step for the baseline, builds are handled just before benchmark execution. Use the `run.sh`
+script to execute all benchmarks:
+```
+./run.sh
+```
+
 <!---
 
 Idea for complete restructuring
