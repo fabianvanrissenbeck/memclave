@@ -74,6 +74,7 @@ then
     sed -i '/DPU,auth only/d' $OUTPUT/subk.csv
     echo "=== Microbenchmark Table ==="
     python3 microbench-table.py $MEMCLAVE_OUTPUT/output/crypto.csv $OUTPUT/subk.csv
+    grep -e 'SK load (baseline)' $UPMEM_OUTPUT/output/sk_baseline.csv | head -1
     grep -e 'DPU Ready line' $MEMCLAVE_OUTPUT/output/sk.csv | head -1
     grep -e 'Key Exchange' $MEMCLAVE_OUTPUT/output/sk.csv | head -1
 else
